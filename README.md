@@ -1,87 +1,121 @@
-# 🧠 Proyecto: Frontend React + Tailwind (Diseño Minimal)
+# 💻 MiApp - Cliente React con Autenticación JWT
 
-Este proyecto es una **Single Page Application (SPA)** hecha con **React y Vite**, usando **TailwindCSS** para los estilos.  
-El objetivo es crear una interfaz limpia y minimalista que permita **registrarse, iniciar sesión y ver el perfil del usuario**.
+## 📋 Descripción del Proyecto
+**MiApp** es una aplicación **React moderna** que implementa un **sistema completo de autenticación JWT**, conectado a un **backend Django**.  
+El proyecto cumple con todos los requisitos del **ejercicio del Día 2 (Frontend)**, demostrando manejo de autenticación, **rutas protegidas** y **persistencia de sesión**.
 
 ---
 
-## 🚀 ¿Qué hace este proyecto?
+## 🚀 Características Principales
 
-- Permite **registrar nuevos usuarios** y **loguearse**.
-- Usa un **contexto de autenticación** para mantener la sesión activa.
-- Se conecta a una **API REST** mediante **Axios**.
-- Maneja **rutas públicas y protegidas** (login, registro, perfil).
-- Presenta un **diseño simple, claro y funcional**.
+### 🔐 Sistema de Autenticación
+- Registro de usuarios con formulario completo  
+- Inicio de sesión con validación **JWT**  
+- Persistencia de sesión automática  
+- Logout seguro con limpieza de tokens  
+- Rutas protegidas y públicas  
 
-## Características
-- Rutas públicas y protegidas: `login`, `register`, `profile`.
-- Estado de autenticación con contexto React.
-- Consumo de API con Axios y token `Bearer`.
-- Estilos minimalistas con tarjetas blancas, bordes grises y tipografía sobria.
+### 🎨 Interfaz de Usuario
+- Diseño **responsive** con **Tailwind CSS**  
+- Tema **claro/oscuro** intercambiable  
+- Componentes modernos con animaciones  
+- Experiencia de usuario optimizada  
 
-## ⚙️ Requisitos
+### 📱 Funcionalidades Adicionales
+- Blog de publicaciones con API externa  
+- Perfil de usuario editable  
+- Hub de aplicaciones (extensible)  
+- Manejo de errores robusto  
 
-Antes de ejecutar el proyecto, asegúrate de tener instalado:
+---
 
-- **Node.js v18 o superior**
-- **npm**
+## 🛠️ Tecnologías Utilizadas
 
+### **Frontend**
+- React 18 + Vite  
+- React Router DOM v6  
+- Tailwind CSS (con modo oscuro)  
+- Context API para manejo de estado global  
+- Axios para peticiones HTTP  
 
-## Inicio Rápido
-1. Instalar dependencias:
-   ```bash
-   npm install
-   ```
-2. Ejecutar entorno de desarrollo:
-   ```bash
-   npm run dev
-   ```
-3. Abre `http://localhost:5174/`.
+### **Estado y Autenticación**
+- **JWT Tokens** (Access + Refresh)  
+- **LocalStorage** para persistencia  
+- **Protected Routes** para seguridad  
+- **Auto-refresh** de tokens  
 
-## Scripts
-- `npm run dev`: servidor de desarrollo (Vite).
-- `npm run build`: build de producción.
-- `npm run preview`: vista previa del build.
+---
 
-## Estructura
-```
+## 📁 Estructura del Proyecto
+
 src/
-  features/
-    auth/        → Login, registro y contexto de sesión
-    profile/     → Página de perfil del usuario
-  components/    → Componentes comunes (como ProtectedRoute)
-  router.jsx     → Definición de rutas
-  main.jsx       → Punto de entrada principal
-  index.css      → Estilos globales con Tailwind
-```
+├── components/                 # Componentes reutilizables
+│   ├── Layout.jsx             # Layout principal con navegación
+│   ├── ProtectedRoute.jsx     # Ruta protegida
+│   ├── PublicRoute.jsx        # Ruta pública
+│   ├── PostCard.jsx           # Tarjeta de publicación
+│   ├── ErrorMsg.jsx           # Mensaje de error
+│   └── Loader.jsx             # Componente de carga
+├── contexts/                  # Contextos de React
+│   ├── ThemeContext.jsx       # Tema claro/oscuro
+│   └── AuthContext.jsx        # Autenticación global
+├── features/                  # Funcionalidades por dominio
+│   ├── auth/                  # Autenticación
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx
+│   │   ├── pages/
+│   │   │   ├── Login.jsx
+│   │   │   └── Register.jsx
+│   │   └── api/               # Llamadas al backend
+│   ├── blog/                  # Blog de publicaciones
+│   │   ├── api/
+│   │   │   └── blogApi.js
+│   │   ├── hooks/
+│   │   │   ├── usePost.js
+│   │   │   └── usePosts.js
+│   │   ├── pages/
+│   │   │   ├── Posts.jsx
+│   │   │   └── PostDetail.jsx
+│   │   └── components/
+│   │       └── PostCard.jsx
+│   └── profile/               # Perfil de usuario
+│       └── pages/
+│           └── Profile.jsx
+├── App.jsx                    # Componente principal
+├── main.jsx                   # Punto de entrada
+└── index.css                  # Estilos globales
 
-## Rutas
-- `/login`: inicia sesión y almacena el token en `localStorage`.
-- `/register`: registro de usuario (no inicia sesión automáticamente).
-- `/profile`: requiere autenticación; muestra datos del usuario.
 
-## Configuración de API
-El endpoint base está definido en `src/features/auth/services/authService.js`:
-```js
-const BASE_URL = 'https://reflexoperu-v3.marketingmedico.vip/backend/public/api';
-```
-- El token se envía en cada request con `Authorization: Bearer <token>`.
-- Si el backend responde `401`, el token se limpia automáticamente del `localStorage`.
+---
 
-## Estilo y Diseño
-- Fondo gris claro (bg-gray-100)
-- Tarjetas blancas con bordes grises y esquinas suaves
-- Tipografía sobria y legible.
-- Formularios simples, sin efectos llamativos
+## ⚙️ Instalación y Configuración
 
-## Problemas Comunes
-- `422 Unprocessable Entity` en registro: el backend valida campos. Por ejemplo, "The email has already been taken" o contraseñas que no coinciden.
-- `401 Unauthenticated` en login/perfil: credenciales inválidas o token vencido/invalidado.
-- Solución rápida:
-  - Usa un correo único y completa campos requeridos.
-  - Asegura que `password` y `password_confirmation` coincidan.
-  - Limpia el token si persiste el error: `localStorage.removeItem('token')` y vuelve a iniciar sesión.
+### 🧩 Prerrequisitos
+- Node.js **v16+**
+- npm o yarn
+- Backend Django Auth ejecutándose en:  
+  👉 **http://localhost:8000**
 
-## Licencia
-Sin licencia específica. Usa y adapta según tus necesidades.
+### 🪜 Pasos de instalación
 
+1. **Clonar el repositorio**
+   ```bash
+   git clone https://github.com/tuusuario/miapp-react.git
+   cd miapp-react
+
+
+2. Instalar dependencias
+
+npm install
+
+3. Configurar variables de entorno
+
+VITE_API_URL=http://localhost:8000/api
+
+4. Iniciar el servidor de desarrollo
+
+npm run dev
+
+5. Abre en tu navegador:
+
+http://localhost:5173
